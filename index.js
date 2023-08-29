@@ -2,10 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const { URL } = require("./models/url");
-const staticRoute = require("./routes/staticRouter");
+const { User } = require("./models/user");
 const { connectMongoDB } = require("./connection");
 
 const urlRoute = require("./routes/url");
+const staticRoute = require("./routes/staticRouter");
+const userRoute = require("./routes/user");
+
 const app = express();
 const PORT = 8001;
 
@@ -16,12 +19,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 
 app.use("/url", urlRoute);
+app.use("/user", userRoute);
 app.use("/", staticRoute);
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
-
-
 
 app.get('/url/:shortId', async (req,res) => {
     const shortId = req.params.shortId;
